@@ -1,7 +1,15 @@
 import { LitElement, html, css } from 'lit-element';
 import { openWcLogo } from '../../open-wc-logo.js';
-
-export class Header extends LitElement {
+/**
+ * `LitMoviePoster` Component
+ *
+ * @customElement
+ * @extends LitElement
+ */
+class Header extends LitElement {
+  /**
+   * Function with lit-css to define (deduped) style modules
+   */
   static get styles() {
     return [
       css`
@@ -37,6 +45,9 @@ export class Header extends LitElement {
     ];
   }
 
+  /**
+   * Render template in shadow dom
+   */
   render() {
     return html`
       <nav role="banner" class="movie-header navbar navbar-expand-lg navbar-light sticky-top">

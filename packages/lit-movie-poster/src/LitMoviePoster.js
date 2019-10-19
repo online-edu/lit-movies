@@ -1,6 +1,15 @@
 import { html, css, LitElement } from 'lit-element';
-
+import { constructImageUrl } from './LitMoviePosterService.js';
+/**
+ * `LitMoviePoster` Component
+ *
+ * @customElement
+ * @extends LitElement
+ */
 export class LitMoviePoster extends LitElement {
+  /**
+   * Function with lit-css to define (deduped) style modules
+   */
   static get styles() {
     return css`
       .movie-poster {
@@ -33,6 +42,9 @@ export class LitMoviePoster extends LitElement {
     `;
   }
 
+  /**
+   * Object property-related metadata
+   */
   static get properties() {
     return {
       name: { type: String },
@@ -40,6 +52,9 @@ export class LitMoviePoster extends LitElement {
     };
   }
 
+  /**
+   * Render template in shadow dom
+   */
   render() {
     return html`
       <button type="button" class="movie-poster">
@@ -47,15 +62,11 @@ export class LitMoviePoster extends LitElement {
           <img
             class="movie-poster__image d-flex rounded"
             alt=${this.name}
-            src=${this._constructImageUrl(this.url)}
+            src=${constructImageUrl(this.url)}
             role="presentation"
           />
         </figure>
       </button>
     `;
-  }
-
-  _constructImageUrl(posterUrl) {
-    return `https://image.tmdb.org/t/p/w185_and_h278_bestv2${posterUrl}`;
   }
 }

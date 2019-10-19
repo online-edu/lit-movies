@@ -1,9 +1,7 @@
 import { LitElement, html } from 'lit-element';
-
 /**
  * `Footer` Component
  *
- * @summary ShortDescription.
  * @customElement
  * @extends LitElement
  */
