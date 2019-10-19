@@ -20,5 +20,6 @@ export default css`
   dd,
   em {
     color: ${white};
+    line-height: 1.35em;
   }
 `;

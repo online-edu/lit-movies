@@ -86,7 +86,7 @@ export class LitMovies extends LitElement {
             this.movieDetail = null;
             document.body.classList.remove('no-scroll');
           }}
-          title=${movie.original_title}
+          title=${movie.title}
         >
           <movie-details .data=${movie}></movie-details>
         </movie-modal>
