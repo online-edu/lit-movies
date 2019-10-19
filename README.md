@@ -2,9 +2,9 @@
   <img width="200" src="https://open-wc.org/hero.png"></img>
 </p>
 
-## Lit Movies App
+## Lit Movies App [![Built with open-wc recommendations](https://img.shields.io/badge/built%20with-open--wc-blue.svg)](https://github.com/open-wc)
 
-[![Built with open-wc recommendations](https://img.shields.io/badge/built%20with-open--wc-blue.svg)](https://github.com/open-wc)
+A sample app which is built using LitElement, lit-html, CSS, HTML and JavaScript.
 
 ## Demo
 
@@ -30,8 +30,3 @@ To get started:
     1.  Hit - `npm test` or `yarn test`
 1.  Run linter
     1.  Hit - `npm run lint` or `yarn lint`
-
-```sh
-npm init @open-wc
-# requires node 10 & npm 6 or higher
-```
