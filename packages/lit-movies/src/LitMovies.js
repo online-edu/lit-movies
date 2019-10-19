@@ -1,10 +1,13 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 
 import './components/header/Header.js';
 import './components/footer/Footer.js';
+import './components/modal/Modal.js';
 import '../../lit-movie-poster/lit-movie-poster.js';
+import './LitMovieDetails.js';
+import { commonStyles } from './styles/index.js';
 
-import { loadMovies, renderMovies } from './LitMoviesService.js';
+import { loadMovies, loadMovieById } from './LitMoviesService.js';
 /**
  * `LitMovies` Component
  *
@@ -18,6 +21,7 @@ export class LitMovies extends LitElement {
   static get properties() {
     return {
       movies: { type: Array },
+      movieDetail: { type: String },
     };
   }
 
@@ -30,6 +34,9 @@ export class LitMovies extends LitElement {
     super();
     this.movies = [];
     this.loading = true;
+    this.loader = html`
+      Loading...
+    `;
   }
 
   /**
@@ -50,13 +57,10 @@ export class LitMovies extends LitElement {
    */
   render() {
     return html`
+      ${this.movieDetail}
       <movies-header></movies-header>
       <main>
-        ${this.loading
-          ? html`
-              Loading...
-            `
-          : renderMovies(this.movies)}
+        ${this.loading ? this.loader : this._renderMovies(this.movies)}
       </main>
       <movies-footer></movies-footer>
     `;
@@ -66,6 +70,46 @@ export class LitMovies extends LitElement {
    * Function with lit-css to define (deduped) style modules
    */
   static get styles() {
-    return [css``];
+    return [commonStyles];
+  }
+
+  /**
+   * Toggle popup and selected movie
+   * @param {Object} event
+   */
+  _renderMovieDetail({ detail: { id } }) {
+    loadMovieById(id).then(movie => {
+      document.body.classList.add('no-scroll');
+      this.movieDetail = html`
+        <movie-modal
+          @modal-close=${() => {
+            this.movieDetail = null;
+            document.body.classList.remove('no-scroll');
+          }}
+          title=${movie.original_title}
+        >
+          <movie-details .data=${movie}></movie-details>
+        </movie-modal>
+      `;
+    });
+  }
+
+  /**
+   * Render movies
+   * @param {Array} movies= list of movies
+   * @returns {TemplateResult}
+   */
+  _renderMovies() {
+    return this.movies.map(
+      movie =>
+        html`
+          <movie-poster
+            @poster-click=${this._renderMovieDetail}
+            id=${movie.id}
+            name=${movie.original_title}
+            url=${movie.poster_path}
+          ></movie-poster>
+        `,
+    );
   }
 }

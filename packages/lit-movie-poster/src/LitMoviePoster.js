@@ -49,6 +49,7 @@ export class LitMoviePoster extends LitElement {
     return {
       name: { type: String },
       url: { type: String },
+      id: { type: Number },
     };
   }
 
@@ -57,8 +58,9 @@ export class LitMoviePoster extends LitElement {
    */
   render() {
     return html`
-      <button type="button" class="movie-poster">
+      <button type="button" class="movie-poster" @click=${this._onClick} @keyPress=${this._onClick}>
         <figure>
+          P
           <img
             class="movie-poster__image d-flex rounded"
             alt=${this.name}
@@ -68,5 +70,12 @@ export class LitMoviePoster extends LitElement {
         </figure>
       </button>
     `;
+  }
+
+  /**
+   * Fire a custom event `poster-click` on button click.
+   */
+  _onClick() {
+    this.dispatchEvent(new CustomEvent('poster-click', { detail: { id: this.id } }));
   }
 }
