@@ -60,7 +60,6 @@ export class LitMoviePoster extends LitElement {
     return html`
       <button type="button" class="movie-poster" @click=${this._onClick} @keyPress=${this._onClick}>
         <figure>
-          P
           <img
             class="movie-poster__image d-flex rounded"
             alt=${this.name}
