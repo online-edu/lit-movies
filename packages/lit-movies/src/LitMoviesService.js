@@ -1,3 +1,4 @@
+import { html } from 'lit-element';
 import { api, key } from './utils/config.js';
 import request from './utils/request.js';
 
@@ -14,4 +15,17 @@ const loadMovies = () =>
  */
 const loadMovieById = id => request.get(`${api}/movie/${id}${key}`);
 
-export { loadMovies, loadMovieById };
+/**
+ * Render movies
+ * @param {Array} movies= list of movies
+ * @returns {TemplateResult}
+ */
+const renderMovies = (movies = []) =>
+  movies.map(
+    movie =>
+      html`
+        <movie-poster name=${movie.original_title} url=${movie.poster_path}></movie-poster>
+      `,
+  );
+
+export { loadMovies, loadMovieById, renderMovies };
