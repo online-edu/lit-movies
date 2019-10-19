@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        background: #fafafa;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="demo"></div>
+
+    <script type="module">
+      import { html, render } from 'lit-html';
+      import '../page-one.js';
+
+      const url = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg';
+      render(
+        html`
+          <movie-poster url=${url}></movie-poster>
+        `,
+        document.querySelector('#demo'),
+      );
+    </script>
+  </body>
+</html>
