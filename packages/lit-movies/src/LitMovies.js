@@ -1,112 +1,115 @@
-import { LitElement, html, css } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { openWcLogo } from './open-wc-logo.js';
+import { LitElement, html } from 'lit-element';
 
-import '../../page-main/page-main.js';
-import '../../page-one/page-one.js';
 import './components/header/Header.js';
 import './components/footer/Footer.js';
-import { templateAbout } from './templateAbout.js';
+import './components/modal/Modal.js';
+import '../../lit-movie-poster/lit-movie-poster.js';
+import './LitMovieDetails.js';
+import { commonStyles } from './styles/index.js';
 
+import { loadMovies, loadMovieById } from './LitMoviesService.js';
+/**
+ * `LitMovies` Component
+ *
+ * @customElement
+ * @extends LitElement
+ */
 export class LitMovies extends LitElement {
+  /**
+   * Object property-related metadata
+   */
+  static get properties() {
+    return {
+      movies: { type: Array },
+      movieDetail: { type: String },
+    };
+  }
+
+  /**
+   * Instance of the element is created/upgraded.
+   * Use: initializing state, set up event listeners
+   * @constructor
+   */
   constructor() {
     super();
-    this.page = 'main';
+    this.movies = [];
+    this.loading = true;
+    this.loader = html`
+      Loading...
+    `;
   }
 
-  _renderPage() {
-    switch (this.page) {
-      case 'main':
-        return html`
-          <page-main .logo=${openWcLogo}></page-main>
-        `;
-      case 'pageOne':
-        return html`
-          <page-one></page-one>
-        `;
-      case 'about':
-        return templateAbout;
-      default:
-        return html`
-          <p>Page not found try going to <a href="#main">Main</a></p>
-        `;
+  /**
+   *Load the movies when component is added in the DOM.
+   */
+  connectedCallback() {
+    if (super.connectedCallback) {
+      super.connectedCallback();
     }
+    loadMovies().then(movies => {
+      this.movies = movies;
+      this.loading = false;
+    });
   }
 
-  __clickPageLink(ev) {
-    ev.preventDefault();
-    this.page = ev.target.hash.substring(1);
-  }
-
-  __addActiveIf(page) {
-    return classMap({ active: this.page === page });
-  }
-
+  /**
+   * Render template in shadow dom
+   */
   render() {
     return html`
+      ${this.movieDetail}
       <movies-header></movies-header>
-      <main></main>
+      <main>
+        ${this.loading ? this.loader : this._renderMovies(this.movies)}
+      </main>
       <movies-footer></movies-footer>
     `;
   }
 
+  /**
+   * Function with lit-css to define (deduped) style modules
+   */
   static get styles() {
-    return [css``];
+    return [commonStyles];
+  }
+
+  /**
+   * Toggle popup and selected movie
+   * @param {Object} event
+   */
+  _renderMovieDetail({ detail: { id } }) {
+    loadMovieById(id).then(movie => {
+      document.body.classList.add('no-scroll');
+      this.movieDetail = html`
+        <movie-modal
+          @modal-close=${() => {
+            this.movieDetail = null;
+            document.body.classList.remove('no-scroll');
+          }}
+          title=${movie.title}
+        >
+          <movie-details .data=${movie}></movie-details>
+        </movie-modal>
+      `;
+    });
+  }
+
+  /**
+   * Render movies
+   * @param {Array} movies= list of movies
+   * @returns {TemplateResult}
+   */
+  _renderMovies() {
+    return this.movies.map(
+      movie =>
+        html`
+          <movie-poster
+            @poster-click=${this._renderMovieDetail}
+            id=${movie.id}
+            name=${movie.original_title}
+            url=${movie.poster_path}
+          ></movie-poster>
+        `,
+    );
   }
 }
-
-// :host {
-//   min-height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: flex-start;
-//   font-size: calc(10px + 2vmin);
-//   color: #1a2b42;
-//   max-width: 960px;
-//   margin: 0 auto;
-// }
-
-// header {
-//   width: 100%;
-//   background: #fff;
-//   border-bottom: 1px solid #ccc;
-// }
-
-// header ul {
-//   display: flex;
-//   justify-content: space-between;
-//   min-width: 400px;
-//   margin: 0 auto;
-//   padding: 0;
-// }
-
-// header ul li {
-//   display: flex;
-// }
-
-// header ul li a {
-//   color: #ccc;
-//   text-decoration: none;
-//   font-size: 18px;
-//   line-height: 36px;
-// }
-
-// header ul li a:hover,
-// header ul li a.active {
-//   color: #000;
-// }
-
-// main {
-//   flex-grow: 1;
-// }
-
-// .app-footer {
-//   color: #a8a8a8;
-//   font-size: calc(12px + 0.5vmin);
-//   align-items: center;
-// }
-
-// .app-footer a {
-//   margin-left: 5px;
-// }

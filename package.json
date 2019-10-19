@@ -58,12 +58,19 @@
   },
   "name": "lit-movies",
   "version": "0.0.0",
+  "author": "Hardik Pithva",
   "description": "Webcomponent lit-movies following open-wc recommendations",
-  "author": "lit-movies",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.0",
     "lit-element": "^2.0.1",
     "lit-html": "^1.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://hardikpthv@github.com/online-edu/lit-movies.git"
+  },
+  "bugs": {
+    "url": "https://github.com/online-edu/lit-movies/issues"
+  },
+  "homepage": "https://github.com/online-edu/lit-movies#readme"
 }
