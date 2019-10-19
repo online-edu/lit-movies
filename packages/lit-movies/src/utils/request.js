@@ -8,7 +8,7 @@ export default {
    * @param {string} url - network request url
    * @param {Object} request - request configuration
    */
-  get(url, request) {
+  get(url, request = {}) {
     return fetch(url, request)
       .then(resp => Promise.resolve(resp.json()))
       .catch(err => Promise.reject(err));
