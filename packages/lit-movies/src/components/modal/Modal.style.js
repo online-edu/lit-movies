@@ -17,7 +17,7 @@ export default css`
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    height: 100%;
+    height: 100vh;
   }
 
   .movie-modal--show {
