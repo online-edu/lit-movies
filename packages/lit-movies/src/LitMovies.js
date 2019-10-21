@@ -60,7 +60,7 @@ export class LitMovies extends LitElement {
       ${this.movieDetail}
       <movies-header></movies-header>
       <main>
-        ${this.loading ? this.loader : this._renderMovies(this.movies)}
+        ${this.loading ? this.loader : this._renderMovies()}
       </main>
       <movies-footer></movies-footer>
     `;
